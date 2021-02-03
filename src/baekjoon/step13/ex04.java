@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class ex04 {
-	static boolean[] visited;
 	static int[] arr;
 	static StringBuilder sb = new StringBuilder();
 	
@@ -17,12 +16,10 @@ public class ex04 {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 		
-		visited = new boolean[N];
 		arr = new int[M];
 		
-		for(int i = 0; i < N; i++) {
-			visited[i] = false;
-		}
+		dfs(1, N, M, 0);
+		System.out.println(sb);
 	}
 	
 	public static void dfs(int at, int N, int M, int depth) {
@@ -31,9 +28,12 @@ public class ex04 {
 				sb.append(val + " ");
 			}
 			sb.append("\n");
+			return;
 		}
 		
-		for(int i = at; i < N; i++) {
+		for(int i = at; i <= N; i++) {
+			arr[depth] = i;
+			dfs(i, N, M, depth+1);
 			
 		}
 	}
