@@ -20,44 +20,70 @@ public class ex06 {
 			}
 		}
 		
-		sudoku();
+		sudoku(0, 0);
 		
-		for(int i = 0; i < 9; i++) {
-			for(int j = 0; j < 9; j++) {
-				System.out.print(arr[i][j] + " ");
-			}
-			System.out.println();
+		
+	}
+	
+	public static void sudoku(int row, int col) {
+		
+		if(col == 9) {
+			sudoku(row+1, 0);
+			return;
 		}
-	}
-	
-	public static void sudoku() {
 		
-	}
-	
-	public static int possibility(int row, int col) {
-		int countRow = 0;
-		int countCol = 0;
-		
-		for(int i = 0; i < 9; i++) {
-			if(i != col && arr[row][i] != 0) {
-				countRow++;
+		if(row == 9) {
+			for(int i = 0; i < 9; i++) {
+				for(int j = 0; j < 9; j++) {
+					System.out.print(arr[i][j] + " ");
+				}
+				System.out.println();
 			}
 			
-			if(i != row && arr[i][col] != 0) {
-				countCol++;
+			System.exit(0);
+		}
+		
+		if(arr[row][col] == 0) {
+			for(int i = 1; i <= 9; i++) {
+				if(isPossibility(row, col, i)) {
+					arr[row][col] = i;
+					sudoku(row, col+1);
+				}
+			}
+			
+			arr[row][col] = 0;
+			return;
+			
+		} else {
+			sudoku(row, col+1);
+		}
+			
+	}
+	
+	public static boolean isPossibility(int row, int col, int val) {
+		for(int i = 0; i < 9; i++) {
+			if(arr[row][i] == val) {
+				return false;
 			}
 		}
 		
-		
-		System.out.println(row + " " + col + " : " + countRow + " " + countCol);
-		if(countRow == 8) {
-			return 1;
-		}
-		else if(countCol == 8) {
-			return 2;
+		for(int i = 0; i < 9; i++) {
+			if(arr[i][col] == val) {
+				return false;
+			}
 		}
 		
-		return 0;
+		int startRow = (row / 3) * 3;
+		int startCol = (col / 3) * 3; 
+		
+		for(int i = startRow; i < startRow+3; i++) {
+			for(int j = startCol; j < startCol+3; j++) {
+				if(arr[i][j] == val) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
 	}
-	
 }
