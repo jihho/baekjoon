@@ -11,7 +11,7 @@ public class ex08 {
 	static int N;
 	static int[][] arr;
 	static boolean[] visited;
-	static int[] memArr;
+	static int Min = Integer.MAX_VALUE;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,7 +19,6 @@ public class ex08 {
 		
 		arr = new int[N][N];
 		visited = new boolean[N];
-		memArr = new int[N];
 		
 		for(int i = 0; i < N; i++) {
 			visited[i] = false;
@@ -32,32 +31,50 @@ public class ex08 {
 			}
 		}
 		
-		startLink(0);
+		startLink(0, 0);
+		System.out.println(Min);
 	}
 	
-	public static void startLink(int depth) {
-		if(depth == N) {
-			for(int i = 0; i < N/2; i++) {
-				System.out.print(memArr[i] + " ");
-			}
-			System.out.println();
-			for(int i = N/2; i < N; i++) {
-				System.out.print(memArr[i] + " ");
-			}
-			System.out.println();
+	public static void startLink(int at, int depth) {
+		if(depth == N / 2) {
+			diff();
 			return;
 		}
 		
-		for(int i = 0; i < N; i++) {
+		for(int i = at; i < N; i++) {
 			if(visited[i] == false) {
 				visited[i] = true;
-				
-				memArr[depth] = i;
-				
-				startLink(depth+1);
+				startLink(i+1, depth+1);
 				visited[i] = false;
 			}
 		}
+	}
+	
+	public static void diff() {
+		int team_start = 0;
+		int team_link = 0;
+		
+		for(int i = 0; i < N - 1; i++) {
+			for(int j = i + 1; j < N; j++) {
+				if(visited[i] == true && visited[j] == true) {
+					team_start += arr[i][j];
+					team_start += arr[j][i];
+				}
+				else if(visited[i] == false && visited[j] == false) {
+					team_link += arr[i][j];
+					team_link += arr[j][i];
+				}
+			}
+		}
+		
+		int val = Math.abs(team_start - team_link);
+		
+		if(val == 0) {
+			System.out.println(val);
+			System.exit(0);
+		}
+		
+		Min = Math.min(val, Min);
 	}
 
 }
