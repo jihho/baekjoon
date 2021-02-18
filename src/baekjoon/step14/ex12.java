@@ -8,44 +8,60 @@ import java.util.StringTokenizer;
 public class ex12 {
 	static int N;
 	static Integer[] arr;
-	static Integer[][] dp;
+	static Integer[] r_dp;
+	static Integer[] l_dp;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		
 		arr = new Integer[N];
-		dp = new Integer[N][2];
+		r_dp = new Integer[N];
+		l_dp = new Integer[N];
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		int max = 0;
 		
 		for(int i = 0; i < N; i++) {
-			max = Math.max(max, bitonicFront(i) + bitonicBack(i) - 1);
+			bitonicFront(i);
+			bitonicBack(i);
 		}
 		
-		System.out.println(max);
+		int max = -1;
+		
+		for(int i = 0; i < N; i++) {
+			max = Math.max(r_dp[i]+l_dp[i], max);
+		}
+		
+		System.out.println(max - 1);
 	}
 	public static int bitonicFront(int n) {
-		dp[n][0] = 1;
-		for(int i = n - 1; i >= 0; i--) {
-			if(arr[i] < arr[n]) {
-				dp[n][0] = Math.max(dp[n][0], bitonicFront(i) + 1);
+		
+		if(r_dp[n] == null) {
+			r_dp[n] = 1;
+			
+			for(int i = n-1; i >= 0; i--) {
+				if(arr[i] < arr[n]) {
+					r_dp[n] = Math.max(r_dp[n], bitonicFront(i) + 1);
+				}
 			}
 		}
-		return dp[n][0];
+		return r_dp[n];
 	}
 	
 	public static int bitonicBack(int n) {
-		dp[n][1] = 1;
-		for(int i = n + 1; i < N; i++) {
-			if(arr[i] < arr[n]) {
-				dp[n][1] = Math.max(dp[n][1], bitonicBack(i) + 1);
+
+		if(l_dp[n] == null) {
+			l_dp[n] = 1;
+			
+			for(int i = n+1; i < l_dp.length; i++) {
+				if(arr[i] < arr[n]) {
+					l_dp[n] = Math.max(l_dp[n], bitonicBack(i) + 1);
+				}
 			}
 		}
-		return dp[n][1];
+		return l_dp[n];
 	}
 }
