@@ -11,8 +11,8 @@ public class ex04 {
 		StringBuilder sb = new StringBuilder();
 		
 		int N = Integer.parseInt(br.readLine());
-		
 		int[] arr = new int[8000];
+		
 		int sum = 0;
 		int max = Integer.MIN_VALUE;
 		int min = Integer.MAX_VALUE;
