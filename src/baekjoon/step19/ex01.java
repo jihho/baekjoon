@@ -36,7 +36,6 @@ public class ex01 {
 			} else {
 				blue++;
 			}
-			
 			return;
 		}
 		
